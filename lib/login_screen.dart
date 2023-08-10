@@ -2,7 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:ourprojectiti/login_cubit/eye_cubit.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
+
 
 import 'create_account_screen.dart';
 
@@ -10,11 +15,27 @@ import 'create_account_screen.dart';
 class Login extends StatelessWidget {
 
 
+  Future<UserCredential> signInWithGoogle() async{
+    final GoogleSignInAccount? gUser= await GoogleSignIn().signIn();
+
+    final GoogleSignInAuthentication gAuth=await gUser!.authentication;
+
+    final credential2 = GoogleAuthProvider.credential(
+      accessToken: gAuth.accessToken,
+      idToken: gAuth.idToken,
+    );
+    return await FirebaseAuth.instance.signInWithCredential(credential2);
+
+  }
+
+
   var emailtext=TextEditingController();
 
   var passwordtext=TextEditingController();
 
   var loginformkey=GlobalKey<FormState>();
+
+  UserCredential? credential;
 
   @override
   Widget build(BuildContext context)
@@ -94,8 +115,17 @@ class Login extends StatelessWidget {
                               {
                                 if(value!.isEmpty)
                                 {
-                                  return 'Emial address must be entered';
+                                  return 'You must enter a correct email address';
                                 }
+                                if(value!.length<=10)
+                                {
+                                  return 'email can\'t be less than 11 letters';
+                                }
+                                if(value!.length>=30)
+                                {
+                                  return 'email can\'t be larger than 29 letters '  ;
+                                }
+
                                 return null;
                               },
                               decoration: InputDecoration(
@@ -115,41 +145,54 @@ class Login extends StatelessWidget {
                        BlocBuilder<EyeCubit, EyeState>(
   builder: (context, state) {
     return Container(
-                         height: 50,
-                         child: TextFormField(
-                           controller: passwordtext,
-                           validator: (value)
-                           {
-                             if(value!.isEmpty)
-                               {
-                                  return 'Password must be entered';
-                               }
-                             return null;
-                           },
-                           keyboardType: TextInputType.visiblePassword,
-                           obscureText: cubit.obsecurefun(),
-                           decoration: InputDecoration(
-                             suffixIcon:  BlocBuilder<EyeCubit, EyeState>(
-  builder: (context, state) {
-    return InkWell(
-                               onTap: cubit.changeEye,
-
-                                   child: Icon(
-                                 Icons.remove_red_eye,color: Colors.black.withOpacity(.5),));
-  },
-),
-                             border: OutlineInputBorder(
-                               borderRadius: BorderRadius.circular(25)),
-                             labelText: 'Password',
-
-
-
-                           ),
-                         ),
-                       );
-  },
-),
-                       const SizedBox(height: 20),
+                              height: 50,
+                              child: TextFormField(
+                                controller: passwordtext,
+                                validator: (value)
+                                {
+                                  if(value!.isEmpty)
+                                  {
+                                    return 'You must enter a password';
+                                  }
+                                  if(value!.length<6)
+                                  {
+                                    return 'password can\'t be less than 6 letters';
+                                  }
+                                  if(value!.length>20)
+                                  {
+                                    return 'password can\'t be larger than 20 letters '  ;
+                                  }
+                                  return null;
+                                },
+                                keyboardType: TextInputType.visiblePassword,
+                                obscureText: cubit.obsecurefun(),
+                                decoration: InputDecoration(
+                                  suffixIcon: BlocBuilder<EyeCubit, EyeState>(
+                                    builder: (context, state) {
+                                      return InkWell(
+                                          onTap: cubit.changeEye,
+                                          child: cubit.seeText
+                                              ? Icon(
+                                                  Icons.remove_red_eye,
+                                                  color: Colors.black
+                                                      .withOpacity(.5),
+                                                )
+                                              : Icon(
+                                                  Icons.visibility_off,
+                                                  color: Colors.black
+                                                      .withOpacity(.5),
+                                                ));
+                                    },
+                                  ),
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(25)),
+                                  labelText: 'Password',
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        const SizedBox(height: 20),
                        Container(
                            alignment: Alignment.center,
                            child: InkWell(
@@ -166,15 +209,34 @@ class Login extends StatelessWidget {
                          ),
                          child: MaterialButton
                            (
-                           onPressed: ()
-                           {
-                             if (loginformkey.currentState!.validate())
-                               {
-                                 print(emailtext.text);
-                                 print(passwordtext.text);
-                               }
-
-                           },
+                            onPressed: () async {
+                              if (loginformkey.currentState!.validate()) {
+                                try {
+                                  credential = await FirebaseAuth.instance
+                                      .signInWithEmailAndPassword(
+                                          email: emailtext.text!,
+                                          password: passwordtext.text!);
+                                  print(credential);
+                                } on FirebaseAuthException catch (e) {
+                                  if (e.code == 'user-not-found') {
+                                    QuickAlert.show(
+                                      context: context,
+                                      type: QuickAlertType.error,
+                                      title: 'Error',
+                                      text: 'No user found for that email',
+                                    );
+                                  } else if (e.code == 'wrong-password') {
+                                    QuickAlert.show(
+                                      context: context,
+                                      type: QuickAlertType.error,
+                                      title: 'Error',
+                                      text:
+                                          'Wrong password provided for that user',
+                                    );
+                                  }
+                                }
+                              }
+                            },
                            child: const Text('sign in',style: TextStyle(color: Colors.white,fontSize: 18)),
                          ),
                        ),
@@ -212,7 +274,12 @@ class Login extends StatelessWidget {
                            mainAxisAlignment:  MainAxisAlignment.center,
                            children: [
                              InkWell(
-                            onTap:(){},
+                            onTap:()async{
+
+                                credential=await signInWithGoogle();
+                                print(credential);
+
+                               },
                                child: CircleAvatar(
                                  radius: 15,
                                  backgroundColor: Colors.white,

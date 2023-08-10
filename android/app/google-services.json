@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "84481285958",
+    "project_id": "egypt-travel-project",
+    "storage_bucket": "egypt-travel-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:84481285958:android:1e0d59badef7c127134f47",
+        "android_client_info": {
+          "package_name": "com.example.ourprojectiti"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "84481285958-41jdfnfsjso3p41027p9akn5hnl47hel.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ourprojectiti",
+            "certificate_hash": "1fa55735565824e3baa10e2b0b36402d2533c8b3"
+          }
+        },
+        {
+          "client_id": "84481285958-qdmddame48v0ogkldrhk4lj33anv9uh3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeNAqRffLUp5kOUoOSQpF9WmQ5qUNzc04"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "84481285958-qdmddame48v0ogkldrhk4lj33anv9uh3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "84481285958-qcfuflq6t077fqg137ut8srqdtgnsmhq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.ourprojectiti"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

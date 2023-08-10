@@ -7,17 +7,17 @@ part 'eye_state.dart';
 class EyeCubit extends Cubit<EyeState> {
   EyeCubit() : super(EyeInitial());
 
-  bool eye_on=true;
+  bool seeText=false;
   bool obsecuretext=true;
   bool obsecurefun()
   {
-    if(eye_on==true)
+    if(seeText==true)
     {
-      obsecuretext=true;
+      obsecuretext=false;
     }
     else
     {
-      obsecuretext=false;
+      obsecuretext=true;
     }
     emit(Securetextstate());
     return obsecuretext;
@@ -26,7 +26,7 @@ class EyeCubit extends Cubit<EyeState> {
   void changeEye()
   {
 
-    eye_on=!eye_on;
+    seeText=!seeText;
 
     emit(Changeeyestate());
 
