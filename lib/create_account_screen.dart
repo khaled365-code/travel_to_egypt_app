@@ -3,9 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:ourprojectiti/login_screen.dart';
+import 'package:ourprojectiti/screens/packages.dart';
 import 'package:ourprojectiti/signup_cubit/signup_cubit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:quickalert/quickalert.dart';
+
+import 'email_verifivcation_screen.dart';
 
 
 
@@ -42,6 +45,7 @@ class Createaccount extends StatelessWidget {
     var createaccountkey=GlobalKey<FormState>();
 
     UserCredential? credential;
+    User? user;
 
     return Scaffold(
 
@@ -237,8 +241,11 @@ class Createaccount extends StatelessWidget {
                                       try {
                                         credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
                                           email: emailTextfield.text!,
-                                          password: passwordTextfield.text!,);
-                                          print(credential);
+                                          password: passwordTextfield.text!,
+                                        );
+                                        user=FirebaseAuth.instance.currentUser;
+                                        await user!.sendEmailVerification();
+                                        print(credential);
 
                                       } on FirebaseAuthException catch (e) {
                                         if (e.code == 'weak-password') {
@@ -265,12 +272,12 @@ class Createaccount extends StatelessWidget {
                                       } catch (e) {
                                         print(e);
                                       }
-                                      if(credential!.user!.emailVerified==false)
+                                      if(credential!=null)
                                         {
-                                          User? user=FirebaseAuth.instance.currentUser;
-                                          await user!.sendEmailVerification();
+                                          Navigator.push(context, MaterialPageRoute(builder: (context) => Login(),));
 
                                         }
+
                                         }
                                     },
                                     

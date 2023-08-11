@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ourprojectiti/screens/onboarding1.dart';
 
 import 'login_screen.dart';
 
@@ -81,7 +82,10 @@ class _SplashState extends State<Splash> {
   {
 
     await Future.delayed(const Duration(seconds: 10),(){});
-   Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+   Navigator.push(context, MaterialPageRoute(builder: (context) => onboarding1(
+     image: 'assets/images/Traveling_Monochromatic 1.png',
+     text: 'Make your own private travel plan',
+   )));
 
   }
 

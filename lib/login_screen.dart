@@ -5,6 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:ourprojectiti/login_cubit/eye_cubit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ourprojectiti/reset_password_screen.dart';
+import 'package:ourprojectiti/screens/packages.dart';
+import 'package:ourprojectiti/splash_screen.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
@@ -194,21 +197,31 @@ class Login extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                        Container(
-                           alignment: Alignment.center,
-                           child: InkWell(
-                             onTap: (){}, child: const Text('forgot password ?',style: TextStyle(fontFamily:'flu',color: Colors.grey,fontSize: 18)))),
-                       const SizedBox(height: 20),
-
-                       Container(
-                         width: double.infinity,
-                         height: 50,
-                         decoration: BoxDecoration(
-                           borderRadius: BorderRadius.circular(25),
-                           border: Border.all(color: const Color(0xff8e3200)),
-                           color: const Color(0xff8e3200),
-                         ),
-                         child: MaterialButton
-                           (
+                            alignment: Alignment.center,
+                            child: InkWell(
+                                onTap: ()
+                                {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => Resetpass(),
+                                      ));
+                                },
+                                child: const Text('forgot password ?',
+                                    style: TextStyle(
+                                        fontFamily: 'flu',
+                                        color: Colors.grey,
+                                        fontSize: 18)))),
+                        const SizedBox(height: 20),
+                        Container(
+                          width: double.infinity,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                            border: Border.all(color: const Color(0xff8e3200)),
+                            color: const Color(0xff8e3200),
+                          ),
+                          child: MaterialButton(
                             onPressed: () async {
                               if (loginformkey.currentState!.validate()) {
                                 try {
@@ -235,106 +248,131 @@ class Login extends StatelessWidget {
                                     );
                                   }
                                 }
+                                if(credential!=null)
+                                  {
+                                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => packages(),));
+                                  }
                               }
                             },
-                           child: const Text('sign in',style: TextStyle(color: Colors.white,fontSize: 18)),
-                         ),
-                       ),
-                       const SizedBox(height: 25),
+                            child: const Text('sign in',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 18)),
+                          ),
+                        ),
+                        const SizedBox(height: 25),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 120,
+                              child: const Divider(
+                                height: 20,
+                                color: Colors.black,
+                                thickness: 2,
+                              ),
+                            ),
+                            const Text(
+                              '   Or   ',
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                            ),
+                            Container(
+                              width: 120,
+                              child: const Divider(
+                                height: 20,
+                                color: Colors.black,
+                                thickness: 2,
+                              ),
+                            )
+                          ],
+                        ),
+                        Container(
+                          margin: const EdgeInsetsDirectional.only(
+                              start: 30, top: 5),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              InkWell(
+                                onTap: () async {
+                                  credential = await signInWithGoogle();
+                                  //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Splash(),));
+
+
+                                },
+                                child: CircleAvatar(
+                                  radius: 15,
+                                  backgroundColor: Colors.white,
+                                  child: Image.asset(
+                                    'assets/images/g.jpg',
+                                    width: 100,
+                                    height: 100,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 30,
+                              ),
+                              InkWell(
+                                onTap: () {},
+                                child: CircleAvatar(
+                                  radius: 20,
+                                  backgroundColor: Colors.white,
+                                  child: Image.asset(
+                                    'assets/images/insta1.jpg',
+                                    width: 100,
+                                    height: 100,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              InkWell(
+                                onTap: () {},
+                                child: CircleAvatar(
+                                  radius: 35,
+                                  backgroundColor: Colors.white,
+                                  child: Image.asset(
+                                    'assets/images/facebook.png',
+                                    width: 100,
+                                    height: 100,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 20),
 
                        Row(
-                         mainAxisAlignment: MainAxisAlignment.center,
-
-                         children: [
-                           Container(
-                             width: 120,
-                             child: const Divider(
-                               height: 20,
-                               color: Colors.black,
-                               thickness: 2,
-
-                             ),
-                           ),
-                           const Text('   Or   ',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold,color: Colors.black),),
-                           Container(
-                             width: 120,
-                             child: const Divider(
-                               height: 20,
-                               color: Colors.black,
-                               thickness: 2,
-
-                             ),
-                           )
-
-                         ],
-                       ),
-                       Container(
-                         margin: const EdgeInsetsDirectional.only(start: 30,top: 5),
-                         child: Row(
-                           mainAxisAlignment:  MainAxisAlignment.center,
-                           children: [
-                             InkWell(
-                            onTap:()async{
-
-                                credential=await signInWithGoogle();
-                                print(credential);
-
-                               },
-                               child: CircleAvatar(
-                                 radius: 15,
-                                 backgroundColor: Colors.white,
-                                 child: Image.asset('assets/images/g.jpg',
-                                   width: 100,
-                                   height: 100,
-                                 ),
-                               ),
-                             ),
-                             const SizedBox(width: 30,),
-                             InkWell(
-                               onTap:(){},
-                               child: CircleAvatar(
-                                 radius: 20,
-                                 backgroundColor: Colors.white,
-                                 child: Image.asset('assets/images/insta1.jpg',
-                                   width: 100,
-                                   height: 100,
-                                 ),
-                               ),
-                             ),
-                             const SizedBox(width: 15,),
-                             InkWell(
-                               onTap:(){},
-                               child: CircleAvatar(
-                                 radius: 35,
-                                 backgroundColor: Colors.white,
-                                 child: Image.asset('assets/images/facebook.png',
-                                   width: 100,
-                                   height: 100,
-                                 ),
-                               ),
-                             ),
-
-                           ],
-                         ),
-                       ),
-                       const SizedBox(height: 20),
-
-                       Row(
-                         mainAxisAlignment: MainAxisAlignment.center,
-                         children: [
-                           Text('New user ? ',style: TextStyle(color: Colors.black.withOpacity(.7),fontSize: 15),),
-                           InkWell(
-                               onTap: ()
-                               {
-                                 Navigator.push(context, MaterialPageRoute(builder: (context) => Createaccount() ));
-                               },
-                               child: Text('sign up',style: TextStyle(color: Colors.black.withOpacity(.8),fontSize: 15,fontWeight: FontWeight.bold),)),
-
-                         ],
-                       )
-
-
-                     ],
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'New user ? ',
+                              style: TextStyle(
+                                  color: Colors.black.withOpacity(.7),
+                                  fontSize: 15),
+                            ),
+                            InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              Createaccount()));
+                                },
+                                child: Text(
+                                  'sign up',
+                                  style: TextStyle(
+                                      color: Colors.black.withOpacity(.8),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                )),
+                          ],
+                        )
+                      ],
                    ),
                    ),
 
