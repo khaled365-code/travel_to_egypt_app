@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ourprojectiti/screens/onboarding1.dart';
 
 import 'login_screen.dart';
@@ -27,42 +28,48 @@ class _SplashState extends State<Splash> {
        backgroundColor: Colors.white,
 
       appBar: AppBar(
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: Colors.white,
+        ),
+
         backgroundColor: Colors.white,
         elevation: 0,
       ),
 
-       body: Center(
-         child: Container(
-           margin: const EdgeInsetsDirectional.only(top: 70),
+       body: SingleChildScrollView(
+         child: Center(
+           child: Container(
+             margin: const EdgeInsetsDirectional.only(top: 70),
 
-           child: Column(
+             child: Column(
 
-               children:
-               [
-                  CircleAvatar(
-                    radius: 150,
-                    child:Image.asset('assets/images/c.png',
+                 children:
+                 [
+                    CircleAvatar(
+                      radius: 150,
+                      child:Image.asset('assets/images/c.png',
+                      ),
                     ),
-                  ),
-                 const SizedBox(height: 30,),
-               const Text(
-                     ' Egypt Travel',
-                     style: TextStyle(
-                         fontSize: 30,
-                         fontWeight: FontWeight.bold,
-                         color: Colors.black,
+                   const SizedBox(height: 30,),
+                 const Text(
+                       ' Egypt Travel',
+                       style: TextStyle(
+                           fontSize: 30,
+                           fontWeight: FontWeight.bold,
+                           color: Colors.black,
+                       ),
                      ),
+                   const SizedBox(height: 80,),
+                   const CircularProgressIndicator(
+                     color: Colors.orange,
                    ),
-                 const SizedBox(height: 80,),
-                 const CircularProgressIndicator(
-                   color: Colors.orange,
-                 ),
 
 
-               ],
+                 ],
 
 
-             ),
+               ),
+           ),
          ),
        ),
 

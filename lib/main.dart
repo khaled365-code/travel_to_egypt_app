@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,6 +6,7 @@ import 'package:ourprojectiti/create_account_screen.dart';
 import 'package:ourprojectiti/email_verifivcation_screen.dart';
 import 'package:ourprojectiti/login_cubit/eye_cubit.dart';
 import 'package:ourprojectiti/reset_password_screen.dart';
+import 'package:ourprojectiti/screens/Home_Screen.dart';
 import 'package:ourprojectiti/signup_cubit/signup_cubit.dart';
 import 'package:ourprojectiti/splash_screen.dart';
 import 'package:provider/provider.dart';
@@ -13,9 +15,19 @@ import 'login_screen.dart';
 import 'model/weather_provider.dart';
 
 
+bool? islogin;
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+var user=  FirebaseAuth.instance.currentUser;
+if(user==null)
+  {
+    islogin=false;
+  }else
+    {
+      islogin=true;
+    }
   runApp(ChangeNotifierProvider
     (
       create: (context){
@@ -41,7 +53,7 @@ class MyApp extends StatelessWidget {
             primarySwatch: Provider.of<WeatherProvider>(context).weatherData==null?Colors.blue:Provider.of<WeatherProvider>(context).weatherData!.getThemeColor(),
           ) ,
           debugShowCheckedModeBanner: false,
-          home: Splash()
+          home:  islogin==false? Splash() : Home_page(),
       ),
     );
   }
