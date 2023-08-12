@@ -110,7 +110,6 @@ class Createaccount extends StatelessWidget {
                             children: [
 
                               Container(
-                                height: 50,
                                 child: TextFormField(
                                   keyboardType: TextInputType.text,
                                   controller: nametextfield,
@@ -145,7 +144,6 @@ class Createaccount extends StatelessWidget {
                               const SizedBox(height: 15),
                               Container(
 
-                                height:50,
                                 child: TextFormField(
                                   controller: emailTextfield,
                                   keyboardType: TextInputType.emailAddress,
@@ -183,7 +181,7 @@ class Createaccount extends StatelessWidget {
                               BlocBuilder<SignupCubit, SignupState>(
   builder: (context, state) {
     return Container(
-                                height: 50,
+
                                 child: TextFormField(
                                   controller: passwordTextfield,
                                   obscureText: cubit.obsecureFun(),

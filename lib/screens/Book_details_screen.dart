@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'add_Payment.dart';
+
 
 class Book_details_Page extends StatefulWidget {
   String ? image;
@@ -15,14 +17,14 @@ class _Book_details_PageState extends State<Book_details_Page> {
     return MaterialApp(
       home: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.only(top: 70),
+          padding: const EdgeInsets.only(top: 50),
           child: Column(
 
             children: [
               //first row
               Row(
                 children: [
-                  const SizedBox(width: 10,),
+                  const SizedBox(width: 25,),
                   Container(
                       decoration: const BoxDecoration(
                           shape: BoxShape.circle,
@@ -32,8 +34,8 @@ class _Book_details_PageState extends State<Book_details_Page> {
                       {
                         Navigator.pop(context);
                       } ,icon:const Icon(Icons.arrow_back_ios_new_sharp),)),
-                  const SizedBox(width: 30,),
-                  const Text('confirm and pay',style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,fontFamily: 'flu'),),
+                  const SizedBox(width: 10,),
+                  const Text('Confirm and pay',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
 
                 ],
 
@@ -193,37 +195,74 @@ class _Book_details_PageState extends State<Book_details_Page> {
                 ],
               ),
               const SizedBox(height: 30,),
-              ElevatedButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text("Success booking"),
-                        content: const Text("Your booking has been successful!"),
-                        actions: [
-                          TextButton(
-                            child: const Text("OK"),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
+
+              Row(
+
+                children: [
+                  SizedBox(
+                    width: 40,
+                  ),
+
+                  ElevatedButton(
+
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text("Success booking"),
+                            content: const Text("Your booking has been successful!"),
+                            actions: [
+                              TextButton(
+                                child: const Text("OK"),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        },
                       );
                     },
-                  );
-                },
-                child: const Text(
-                  'Book',
-                  style: TextStyle(fontSize: 20, color: Colors.white),
-                ),
-                style: ElevatedButton.styleFrom(
-                  primary: const Color(0xff8e3200),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+                    child: const Text(
+                      'Book',
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: const Color(0XFFde7542),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    ),
                   ),
-                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                ),
+                  Spacer(
+                  ),
+
+
+                  ElevatedButton(
+
+                  onPressed: ()
+                  {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ViewPayment()));
+                  },
+                    child: const Text(
+                      'Payment',
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: const Color(0XFFde7542),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 40,
+                  ),
+
+                ],
               ),
 
 
